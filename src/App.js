@@ -1,25 +1,23 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import HomePage from './HomePage';
+import GamePage from './GamePage';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App = () => {
+	const [description, setDescription] = useState('');
+	const [showGame, setShowGame] = useState(false);
+
+	const handlePlay = (inputValue) => {
+		console.log('Transitioning to GamePage with description:', inputValue); // Add this log
+		setDescription(inputValue);
+		setShowGame(true);
+	};
+
+	return (
+		<div className="App">
+			{showGame ? <GamePage description={description} /> : <HomePage onPlay={handlePlay} />}
+		</div>
+	);
+};
 
 export default App;
