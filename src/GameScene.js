@@ -5,26 +5,24 @@ export default class GameScene extends Phaser.Scene {
 		super({ key: 'GameScene' });
 	}
 
-	init(data) {
-		this.assets = data.assets;
-	}
-
 	preload() {
-		this.load.image('background', this.assets.background_url);
-		this.load.image('mage', this.assets.mage_url);
-		this.load.image('potion', this.assets.potion_url);
+		const { assets } = this.scene.settings.data;
+		this.load.image('background', `data:image/jpeg;base64,${assets.stylized_image}`);
+		this.load.image('mage', 'assets/mage.png');
+		this.load.image('potion', 'assets/potion.png');
 	}
 
 	create() {
-		this.add.image(960, 540, 'background');
+		const { width, height } = this.scale;
+		this.add.image(width / 2, height / 2, 'background').setDisplaySize(width, height);
 
-		const potions = this.physics.add.group({
+		this.potions = this.physics.add.group({
 			key: 'potion',
-			repeat: 5,
-			setXY: { x: 12, y: 0, stepX: 70 },
+			repeat: 11,
+			setXY: { x: 12, y: 0, stepX: 70 }
 		});
 
-		potions.children.iterate(function (child) {
+		this.potions.children.iterate(function (child) {
 			child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
 		});
 
@@ -33,6 +31,8 @@ export default class GameScene extends Phaser.Scene {
 		this.player.setCollideWorldBounds(true);
 
 		this.cursors = this.input.keyboard.createCursorKeys();
+
+		this.physics.add.collider(this.player, this.potions, this.collectPotion, null, this);
 	}
 
 	update() {
@@ -47,5 +47,9 @@ export default class GameScene extends Phaser.Scene {
 		if (this.cursors.up.isDown && this.player.body.touching.down) {
 			this.player.setVelocityY(-330);
 		}
+	}
+
+	collectPotion(player, potion) {
+		potion.disableBody(true, true);
 	}
 }

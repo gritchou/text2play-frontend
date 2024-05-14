@@ -7,9 +7,9 @@ const App = () => {
 	const [assets, setAssets] = useState(null);
 	const [showGame, setShowGame] = useState(false);
 
-	const handlePlay = (apiResponse) => {
-		console.log('Transitioning to GamePage with assets:', apiResponse);
-		setAssets(apiResponse);
+	const handlePlay = (assets) => {
+		console.log('Transitioning to GamePage with assets:', assets);
+		setAssets(assets);
 		setShowGame(true);
 	};
 

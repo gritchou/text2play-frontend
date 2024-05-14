@@ -19,7 +19,7 @@ const GamePage = ({ assets }) => {
 		};
 
 		const game = new Phaser.Game(config);
-		game.scene.start('GameScene', { assets: assets });
+		game.scene.start('GameScene', { assets });
 
 		return () => {
 			game.destroy(true);
