@@ -43,36 +43,37 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	margin-top: 50px;
+	justify-content: center;
+	min-height: 100vh;
 	font-family: 'Press Start 2P', cursive;
-	/* Retro gaming font */
 	color: #fff;
 	background-color: #000;
 	padding: 20px;
-	border: 3px solid #fff;
-	box-shadow: 0 0 10px #fff;
-	width: 80%;
-	margin: 50px auto;
+	box-sizing: border-box;
+}
+
+.home-page h1 {
+	margin-bottom: 30px;
+	font-size: 48px;
 }
 
 .home-page input {
-	margin-top: 20px;
+	margin-bottom: 20px;
 	padding: 10px;
-	width: 300px;
+	width: 600px;
+	height: 40px;
 	font-family: 'Press Start 2P', cursive;
-	/* Retro gaming font */
 	background-color: #222;
 	color: #fff;
 	border: 2px solid #fff;
 	text-align: center;
+	font-size: 18px;
 }
 
 .home-page button {
-	margin-top: 20px;
-	padding: 10px 20px;
-	font-size: 16px;
+	padding: 15px 30px;
+	font-size: 20px;
 	font-family: 'Press Start 2P', cursive;
-	/* Retro gaming font */
 	background-color: #444;
 	color: #fff;
 	border: 2px solid #fff;
