@@ -4,18 +4,18 @@ import GamePage from './GamePage';
 import './App.css';
 
 const App = () => {
-	const [description, setDescription] = useState('');
+	const [assets, setAssets] = useState(null);
 	const [showGame, setShowGame] = useState(false);
 
-	const handlePlay = (inputValue) => {
-		console.log('Transitioning to GamePage with description:', inputValue); // Add this log
-		setDescription(inputValue);
+	const handlePlay = (apiResponse) => {
+		console.log('Transitioning to GamePage with assets:', apiResponse);
+		setAssets(apiResponse);
 		setShowGame(true);
 	};
 
 	return (
 		<div className="App">
-			{showGame ? <GamePage description={description} /> : <HomePage onPlay={handlePlay} />}
+			{showGame ? <GamePage assets={assets} /> : <HomePage onPlay={handlePlay} />}
 		</div>
 	);
 };
