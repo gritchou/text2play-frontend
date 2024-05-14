@@ -22,6 +22,9 @@ const HomePage = ({ onPlay }) => {
 			setLoading(false);
 			setGameReady(true);
 			window.addEventListener('keydown', handleKeyPress);
+
+			// Pass the response data to the GamePage component
+			onPlay(response.data);
 		} catch (error) {
 			console.error('Error fetching assets:', error);
 			setLoading(false);
@@ -32,7 +35,6 @@ const HomePage = ({ onPlay }) => {
 	const handleKeyPress = () => {
 		if (gameReady) {
 			setGameReady(false);
-			onPlay(inputValue);
 			window.removeEventListener('keydown', handleKeyPress);
 		}
 	};
