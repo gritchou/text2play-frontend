@@ -10,6 +10,7 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('background', `data:image/jpeg;base64,${assets.stylized_image}`);
 		this.load.image('mage', 'assets/mage.png');
 		this.load.image('potion', 'assets/potion.png');
+		this.load.image('ground', 'assets/ground.png');
 		this.load.image('platform', 'assets/platform.png');
 	}
 
@@ -18,6 +19,10 @@ export default class GameScene extends Phaser.Scene {
 
 		// Add background
 		this.add.image(width / 2, height / 2, 'background').setDisplaySize(width, height);
+
+		// Add ground
+		const ground = this.physics.add.staticGroup();
+		ground.create(width / 2, height - 32, 'ground').setDisplaySize(width, 64).refreshBody(); // Adjust the ground display size as needed
 
 		// Add floating platforms
 		const floatingPlatforms = this.physics.add.staticGroup();
@@ -42,32 +47,13 @@ export default class GameScene extends Phaser.Scene {
 		this.player.setBounce(0.2);
 		this.player.setCollideWorldBounds(true);
 
-		// Player animations
-		this.anims.create({
-			key: 'left',
-			frames: this.anims.generateFrameNumbers('mage', { start: 0, end: 3 }),
-			frameRate: 10,
-			repeat: -1
-		});
-
-		this.anims.create({
-			key: 'turn',
-			frames: [{ key: 'mage', frame: 4 }],
-			frameRate: 20
-		});
-
-		this.anims.create({
-			key: 'right',
-			frames: this.anims.generateFrameNumbers('mage', { start: 5, end: 8 }),
-			frameRate: 10,
-			repeat: -1
-		});
-
 		this.cursors = this.input.keyboard.createCursorKeys();
 		this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
 		// Collisions
+		this.physics.add.collider(this.player, ground);
 		this.physics.add.collider(this.player, floatingPlatforms);
+		this.physics.add.collider(this.potions, ground);
 		this.physics.add.collider(this.potions, floatingPlatforms);
 		this.physics.add.collider(this.player, this.potions, this.collectPotion, null, this);
 	}
