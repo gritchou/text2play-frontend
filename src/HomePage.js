@@ -21,7 +21,6 @@ const HomePage = ({ onPlay }) => {
 			console.log('API response:', response.data);
 			setLoading(false);
 			setGameReady(true);
-			window.addEventListener('keydown', handleKeyPress);
 
 			// Pass the response data to the GamePage component
 			onPlay(response.data);
@@ -40,6 +39,12 @@ const HomePage = ({ onPlay }) => {
 	};
 
 	useEffect(() => {
+		if (gameReady) {
+			window.addEventListener('keydown', handleKeyPress);
+		} else {
+			window.removeEventListener('keydown', handleKeyPress);
+		}
+
 		return () => {
 			window.removeEventListener('keydown', handleKeyPress);
 		};
