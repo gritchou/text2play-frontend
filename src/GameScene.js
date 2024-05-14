@@ -10,8 +10,8 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('background', `data:image/jpeg;base64,${assets.stylized_image}`);
 		this.load.image('mage', 'assets/mage.png');
 		this.load.image('potion', 'assets/potion.png');
-		this.load.image('ground', 'assets/ground.png');
-		this.load.image('platform', 'assets/platform.png');
+		this.load.image('ground', 'assets/ground.png'); // Load the ground image
+		this.load.image('platform', 'assets/platform.png'); // Load the platform image
 	}
 
 	create() {
@@ -24,11 +24,20 @@ export default class GameScene extends Phaser.Scene {
 		const ground = this.physics.add.staticGroup();
 		ground.create(width / 2, height - 32, 'ground').setDisplaySize(width, 64).refreshBody(); // Adjust the ground display size as needed
 
-		// Add floating platforms
-		const floatingPlatforms = this.physics.add.staticGroup();
-		floatingPlatforms.create(200, 400, 'platform');
-		floatingPlatforms.create(600, 300, 'platform');
-		floatingPlatforms.create(1000, 400, 'platform');
+		// Add floating platforms with custom collision areas
+		const platform1 = this.add.image(200, 600, 'platform'); // Lower this platform
+		const platform2 = this.add.image(600, 400, 'platform'); // Lower this platform
+		const platform3 = this.add.image(1000, 500, 'platform'); // Keep this platform the same
+
+		// Enable physics on platforms and set custom collision areas
+		this.physics.add.existing(platform1, true);
+		this.physics.add.existing(platform2, true);
+		this.physics.add.existing(platform3, true);
+
+		// Set custom collision sizes (e.g., smaller than the image dimensions)
+		platform1.body.setSize(250, 20).setOffset(0, 140);
+		platform2.body.setSize(250, 20).setOffset(0, 140);
+		platform3.body.setSize(250, 20).setOffset(0, 140);
 
 		// Add potions
 		this.potions = this.physics.add.group({
@@ -52,9 +61,9 @@ export default class GameScene extends Phaser.Scene {
 
 		// Collisions
 		this.physics.add.collider(this.player, ground);
-		this.physics.add.collider(this.player, floatingPlatforms);
+		this.physics.add.collider(this.player, [platform1, platform2, platform3]);
 		this.physics.add.collider(this.potions, ground);
-		this.physics.add.collider(this.potions, floatingPlatforms);
+		this.physics.add.collider(this.potions, [platform1, platform2, platform3]);
 		this.physics.add.collider(this.player, this.potions, this.collectPotion, null, this);
 	}
 
