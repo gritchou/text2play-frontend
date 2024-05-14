@@ -17,7 +17,16 @@ const HomePage = ({ onPlay }) => {
 		setLoading(true);
 
 		try {
-			const response = await axios.post(`${process.env.REACT_APP_API_ENDPOINT}/getImage/`, { prompt: inputValue });
+			const response = await axios.post(
+				`${process.env.REACT_APP_API_ENDPOINT}/getImage/`,
+				{ prompt: inputValue },
+				{
+					headers: {
+						'Content-Type': 'application/json',
+						'Access-Control-Allow-Origin': '*',
+					},
+				}
+			);
 			console.log('API response:', response.data);
 			setLoading(false);
 			setGameReady(true);
