@@ -15,8 +15,7 @@ const HomePage = ({ onPlay }) => {
 
 	return (
 		<div className="home-page">
-			<h1>Welcome to the Game</h1>
-			<label htmlFor="description-input">Enter a description:</label>
+			<h1>Text2Play</h1>
 			<input
 				type="text"
 				id="description-input"
