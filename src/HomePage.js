@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 
 const HomePage = ({ onPlay }) => {
@@ -21,6 +21,7 @@ const HomePage = ({ onPlay }) => {
 			console.log('API response:', response.data);
 			setLoading(false);
 			setGameReady(true);
+			window.addEventListener('keydown', handleKeyPress);
 
 			// Pass the response data to the GamePage component
 			onPlay(response.data);
@@ -31,24 +32,18 @@ const HomePage = ({ onPlay }) => {
 		}
 	};
 
-	const handleKeyPress = () => {
+	const handleKeyPress = useCallback(() => {
 		if (gameReady) {
 			setGameReady(false);
 			window.removeEventListener('keydown', handleKeyPress);
 		}
-	};
+	}, [gameReady]);
 
 	useEffect(() => {
-		if (gameReady) {
-			window.addEventListener('keydown', handleKeyPress);
-		} else {
-			window.removeEventListener('keydown', handleKeyPress);
-		}
-
 		return () => {
 			window.removeEventListener('keydown', handleKeyPress);
 		};
-	}, [gameReady]);
+	}, [handleKeyPress]);
 
 	return (
 		<div className="home-page">
