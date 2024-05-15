@@ -15,7 +15,7 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('platform', 'assets/platform.png'); // Load the platform image
 
 		// Load the collision sound
-		this.load.audio('collisionSound', 'assets/thudding.wav'); // Correct path to the collision sound file
+		this.load.audio('collisionSound', 'assets/collision.wav'); // Correct path to the collision sound file
 
 		// Load the potion sound
 		this.load.audio('potionSound', 'assets/potion.mp3'); // Correct path to the potion sound file
