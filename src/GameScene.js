@@ -3,6 +3,7 @@ import Phaser from 'phaser';
 export default class GameScene extends Phaser.Scene {
 	constructor() {
 		super({ key: 'GameScene' });
+		this.collisionDebounce = false; // Initialize the collision debounce flag
 	}
 
 	preload() {
@@ -12,6 +13,12 @@ export default class GameScene extends Phaser.Scene {
 		this.load.image('potion', 'assets/potion.png');
 		this.load.image('ground', 'assets/ground.png'); // Load the ground image
 		this.load.image('platform', 'assets/platform.png'); // Load the platform image
+
+		// Load the collision sound
+		this.load.audio('collisionSound', 'assets/thudding.wav'); // Correct path to the collision sound file
+
+		// Load the potion sound
+		this.load.audio('potionSound', 'assets/potion.mp3'); // Correct path to the potion sound file
 	}
 
 	create() {
@@ -59,12 +66,26 @@ export default class GameScene extends Phaser.Scene {
 		this.cursors = this.input.keyboard.createCursorKeys();
 		this.spaceBar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
+		// Add collision sound with volume control
+		this.collisionSound = this.sound.add('collisionSound', {
+			volume: 0.1 // Adjust volume (0.1 means 10% volume)
+		});
+
+		// Add potion sound with volume control
+		this.potionSound = this.sound.add('potionSound', {
+			volume: 0.15 // Adjust volume (0.15 means 15% volume)
+		});
+
 		// Collisions
 		this.physics.add.collider(this.player, ground);
 		this.physics.add.collider(this.player, [platform1, platform2, platform3]);
 		this.physics.add.collider(this.potions, ground);
 		this.physics.add.collider(this.potions, [platform1, platform2, platform3]);
 		this.physics.add.collider(this.player, this.potions, this.collectPotion, null, this);
+
+		// Listen for boundary collision
+		this.player.body.onWorldBounds = true;
+		this.physics.world.on('worldbounds', this.handleCollision, this);
 	}
 
 	update() {
@@ -81,7 +102,20 @@ export default class GameScene extends Phaser.Scene {
 		}
 	}
 
+	handleCollision(body, up, down, left, right) {
+		if (body.gameObject === this.player && !this.collisionDebounce) {
+			this.collisionDebounce = true; // Set the debounce flag
+			this.collisionSound.play(); // Play the collision sound
+
+			// Reset the debounce flag after a short delay
+			this.time.delayedCall(500, () => {
+				this.collisionDebounce = false;
+			});
+		}
+	}
+
 	collectPotion(player, potion) {
 		potion.disableBody(true, true);
+		this.potionSound.play(); // Play the potion sound when a potion is collected
 	}
 }
