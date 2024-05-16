@@ -4,7 +4,7 @@ import './HomePage.css'; // Add CSS file for retro styling
 
 const HomePage = ({ onPlay }) => {
 	const [inputValue, setInputValue] = useState('');
-	const [resolution, setResolution] = useState('SD');
+	const [resolution, setResolution] = useState('SD'); // Set default to 'SD'
 	const [loading, setLoading] = useState(false);
 	const [gameReady, setGameReady] = useState(false);
 	const [assets, setAssets] = useState(null); // New state to hold the assets
@@ -87,7 +87,10 @@ const HomePage = ({ onPlay }) => {
 		<div className="home-page">
 			<h1>Text2Play</h1>
 			{loading ? (
-				<p>Preparing assets...</p>
+				<div className="loading-container">
+					<p>Preparing assets...</p>
+					<div className="spinner"></div>
+				</div>
 			) : gameReady ? (
 				<p>Game is ready, press any key to play</p>
 			) : (
