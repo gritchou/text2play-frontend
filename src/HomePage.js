@@ -34,7 +34,10 @@ const HomePage = ({ onPlay }) => {
 				`${process.env.REACT_APP_API_ENDPOINT}/getImage/`,
 				{
 					prompt: inputValue,
-					resolution: resolutionMap[resolution]
+					resolution: resolutionMap[resolution],
+					content_weight: null,
+					style_weight: null,
+					num_steps: null
 				},
 				{
 					headers: {
