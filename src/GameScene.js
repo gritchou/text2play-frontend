@@ -1,4 +1,5 @@
 import Phaser from 'phaser';
+// import localBackground from './assets/background_large.jpg'; // Import the local background image
 
 export default class GameScene extends Phaser.Scene {
 	constructor() {
@@ -8,7 +9,13 @@ export default class GameScene extends Phaser.Scene {
 
 	preload() {
 		const { assets } = this.scene.settings.data;
-		this.load.image('background', `data:image/jpeg;base64,${assets.stylized_image}`);
+
+		if (assets.localBackground) {
+			this.load.image('background', 'assets/background_large.jpg');
+		} else {
+			this.load.image('background', `data:image/jpeg;base64,${assets.stylized_image}`);
+		}
+
 		this.load.image('mage', 'assets/mage.png');
 		this.load.image('potion', 'assets/potion.png');
 		this.load.image('ground', 'assets/ground.png'); // Load the ground image

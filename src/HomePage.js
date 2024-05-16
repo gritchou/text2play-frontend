@@ -30,29 +30,40 @@ const HomePage = ({ onPlay }) => {
 		};
 
 		try {
-			const response = await axios.post(
-				`${process.env.REACT_APP_API_ENDPOINT}/getImage/`,
-				{
-					prompt: inputValue,
-					resolution: resolutionMap[resolution],
-					content_weight: null,
-					style_weight: null,
-					num_steps: null
-				},
-				{
-					headers: {
-						'Content-Type': 'application/json',
-						'Access-Control-Allow-Origin': '*',
-					},
-				}
-			);
-			console.log('API response:', response.data);
-			setLoading(false);
-			setGameReady(true);
-			window.addEventListener('keydown', handleKeyPress);
+			if (inputValue.trim() === '') {
+				// Local background image scenario
+				setLoading(false);
+				setGameReady(true);
+				window.addEventListener('keydown', handleKeyPress);
 
-			// Pass the response data to the GamePage component
-			onPlay(response.data);
+				// Pass the local background data to the GamePage component
+				onPlay({ localBackground: true });
+			} else {
+				// Fetch background from the internet
+				const response = await axios.post(
+					`${process.env.REACT_APP_API_ENDPOINT}/getImage/`,
+					{
+						prompt: inputValue,
+						resolution: resolutionMap[resolution],
+						content_weight: null,
+						style_weight: null,
+						num_steps: null
+					},
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				console.log('API response:', response.data);
+				setLoading(false);
+				setGameReady(true);
+				window.addEventListener('keydown', handleKeyPress);
+
+				// Pass the response data to the GamePage component
+				onPlay(response.data);
+			}
 		} catch (error) {
 			console.error('Error fetching assets:', error);
 			setLoading(false);
