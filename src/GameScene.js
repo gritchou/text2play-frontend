@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-// import localBackground from './assets/background_large.jpg'; // Import the local background image
+import localBackground from './assets/background_large.jpg'; // Import the local background image
 
 export default class GameScene extends Phaser.Scene {
 	constructor() {
@@ -11,7 +11,7 @@ export default class GameScene extends Phaser.Scene {
 		const { assets } = this.scene.settings.data;
 
 		if (assets.localBackground) {
-			this.load.image('background', 'assets/background_large.jpg');
+			this.load.image('background', localBackground);
 		} else {
 			this.load.image('background', `data:image/jpeg;base64,${assets.stylized_image}`);
 		}
