@@ -4,7 +4,7 @@ import './HomePage.css'; // Add CSS file for retro styling
 
 const HomePage = ({ onPlay }) => {
 	const [inputValue, setInputValue] = useState('');
-	const [resolution, setResolution] = useState('HD');
+	const [resolution, setResolution] = useState('SD');
 	const [loading, setLoading] = useState(false);
 	const [gameReady, setGameReady] = useState(false);
 	const [assets, setAssets] = useState(null); // New state to hold the assets
