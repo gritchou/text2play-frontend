@@ -40,8 +40,8 @@ The frontend for Text2Play is built with React and integrates Phaser.io to rende
 
 ## Contributors
 - **Jean-François Grand** - [LinkedIn](https://www.linkedin.com/in/jfgrand) | [GitHub](https://github.com/gritchou)
-- **Guillaume Padan**
-- **Shuja Khan**
+- **Guillaume Padan** - [GitHub](https://github.com/guilPad)
+- **Shuja Khan** - [GitHub](https://github.com/shuja3khan)
 
 ## References
 - [Phaser.io](https://phaser.io/)
