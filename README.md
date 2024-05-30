@@ -35,7 +35,7 @@ The frontend for Text2Play is built with React and integrates Phaser.io to rende
 
 ## Usage
 1. Enter a prompt in the input field.
-2. Click "Generate" to create a game background.
+2. Click "Play" to create a game background.
 3. Play the game with the newly generated background.
 
 ## Contributors
