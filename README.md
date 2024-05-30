@@ -26,11 +26,11 @@ The frontend for Text2Play is built with React and integrates Phaser.io to rende
     ```
 3. Install dependencies:
     ```sh
-    npm install
+    yarn install
     ```
 4. Run the application:
     ```sh
-    npm start
+    yarn start
     ```
 
 ## Usage
