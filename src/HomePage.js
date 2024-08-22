@@ -4,9 +4,10 @@ import './HomePage.css'; // Add CSS file for retro styling
 
 const HomePage = ({ onPlay }) => {
 	const [inputValue, setInputValue] = useState('');
-	const [resolution, setResolution] = useState('HD');
+	const [resolution, setResolution] = useState('SD'); // Set default to 'SD'
 	const [loading, setLoading] = useState(false);
 	const [gameReady, setGameReady] = useState(false);
+	const [assets, setAssets] = useState(null); // New state to hold the assets
 
 	const handleInputChange = (e) => {
 		setInputValue(e.target.value);
@@ -30,29 +31,34 @@ const HomePage = ({ onPlay }) => {
 		};
 
 		try {
-			const response = await axios.post(
-				`${process.env.REACT_APP_API_ENDPOINT}/getImage/`,
-				{
-					prompt: inputValue,
-					resolution: resolutionMap[resolution],
-					content_weight: null,
-					style_weight: null,
-					num_steps: null
-				},
-				{
-					headers: {
-						'Content-Type': 'application/json',
-						'Access-Control-Allow-Origin': '*',
+			if (inputValue.trim() === '') {
+				// Local background image scenario
+				setLoading(false);
+				setAssets({ localBackground: true }); // Store assets locally
+				setGameReady(true);
+			} else {
+				// Fetch background from the internet
+				const response = await axios.post(
+					`${process.env.REACT_APP_API_ENDPOINT}/getImage/`,
+					{
+						prompt: inputValue,
+						resolution: resolutionMap[resolution],
+						content_weight: null,
+						style_weight: null,
+						num_steps: null
 					},
-				}
-			);
-			console.log('API response:', response.data);
-			setLoading(false);
-			setGameReady(true);
-			window.addEventListener('keydown', handleKeyPress);
-
-			// Pass the response data to the GamePage component
-			onPlay(response.data);
+					{
+						headers: {
+							'Content-Type': 'application/json',
+							'Access-Control-Allow-Origin': '*',
+						},
+					}
+				);
+				console.log('API response:', response.data);
+				setLoading(false);
+				setAssets(response.data); // Store fetched assets
+				setGameReady(true);
+			}
 		} catch (error) {
 			console.error('Error fetching assets:', error);
 			setLoading(false);
@@ -60,24 +66,31 @@ const HomePage = ({ onPlay }) => {
 		}
 	};
 
-	const handleKeyPress = useCallback(() => {
+	const handleKeyPress = useCallback((event) => {
 		if (gameReady) {
 			setGameReady(false);
 			window.removeEventListener('keydown', handleKeyPress);
+			onPlay(assets); // Pass the stored assets to onPlay
 		}
-	}, [gameReady]);
+	}, [gameReady, onPlay, assets]);
 
 	useEffect(() => {
+		if (gameReady) {
+			window.addEventListener('keydown', handleKeyPress);
+		}
 		return () => {
 			window.removeEventListener('keydown', handleKeyPress);
 		};
-	}, [handleKeyPress]);
+	}, [gameReady, handleKeyPress]);
 
 	return (
 		<div className="home-page">
 			<h1>Text2Play</h1>
 			{loading ? (
-				<p>Preparing assets...</p>
+				<div className="loading-container">
+					<p>Preparing assets...</p>
+					<div className="spinner"></div>
+				</div>
 			) : gameReady ? (
 				<p>Game is ready, press any key to play</p>
 			) : (
